@@ -160,7 +160,7 @@ img[src*="dr-"] {
 #gallery-container:has(.hero-column.accordion-expanded) .side-column {
     flex: 0.4; /* Stronger squish for focus */
     opacity: 0.4;
-    filter: grayscale(80%); /* Adds professional focus to the hero */
+    filter: grayscale(30%); /* Adds professional focus to the hero */
 }
 
 #gallery-container .hero-column:hover,
@@ -172,6 +172,23 @@ img[src*="dr-"] {
 .accordion-expanded .accordion-content {
     max-h: 100px;
     opacity: 1;
+}
+
+/* Review Wall Specifics */
+.break-inside-avoid {
+    break-inside: avoid-column;
+    display: block;
+}
+
+/* Optional: Add a slight scale effect on hover for the reviews */
+#reviews-wall .break-inside-avoid {
+    transition: all 0.4s ease;
+}
+
+#reviews-wall .break-inside-avoid:hover {
+    transform: scale(1.02);
+    border-color: #2563eb;
+    box-shadow: 0 20px 40px rgba(30, 64, 175, 0.05);
 }
 
 /* Mobile fix */

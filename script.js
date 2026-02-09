@@ -15,6 +15,25 @@ window.addEventListener('focus', () => {
     document.title = "DuoDent | Модерна стоматология Пловдив";
 });
 
+const menuToggle = document.getElementById('menu-toggle');
+const closeMenu = document.getElementById('close-menu');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileLinks = document.querySelectorAll('.mobile-link');
+
+function toggleMenu() {
+    mobileMenu.classList.toggle('translate-x-full');
+    // Prevent scrolling when menu is open
+    document.body.classList.toggle('overflow-hidden');
+}
+
+menuToggle.addEventListener('click', toggleMenu);
+closeMenu.addEventListener('click', toggleMenu);
+
+// Close menu when a link is clicked
+mobileLinks.forEach(link => {
+    link.addEventListener('click', toggleMenu);
+});
+
 // 2. Schema.org Injection (CRITICAL for Local SEO)
 // This tells Google exactly where the clinic is and who the doctors are.
 const schemaData = {
@@ -130,6 +149,6 @@ function acceptCookies() {
 
 // Funnel Action
 function openBooking() {
-    // You can replace this with a Superdoc redirect or a Modal trigger
-    window.open('https://superdoc.bg/', '_blank');
+    // Direct link to the DuoDent Superdoc page
+    window.open('https://superdoc.bg/klinika/dentalen-kabinet-duodent', '_blank');
 }
