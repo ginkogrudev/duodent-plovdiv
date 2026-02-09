@@ -159,6 +159,70 @@ function openBooking() {
     window.open("https://superdoc.bg/klinika/dentalen-kabinet-duodent", "_blank");
 }
 
+document.getElementById('conciergeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const btn = form.querySelector('button');
+    const originalText = btn.innerText;
+    
+    // 1. Capture Data
+    const name = document.getElementById('p_name').value;
+    const phone = document.getElementById('p_phone').value;
+    const date = document.getElementById('p_date').value;
+    const time = document.getElementById('p_time').value;
+    const sendWA = document.getElementById('sendWhatsApp').checked;
+
+    // 2. Visual Feedback
+    btn.innerText = "ИЗПРАЩАНЕ...";
+    btn.disabled = true;
+
+    // 3. Send Email (via Web3Forms)
+    const formData = new FormData(form);
+    
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(async (response) => {
+        if (response.status === 200) {
+            
+            // 4. TRIGGER WHATSAPP (The Magic)
+            if (sendWA) {
+                // Format: "Hello, I am [Name]. I would like to book for [Date] [Time]. My phone is [Phone]."
+                const text = `Здравейте, казвам се ${name}. Искам да запазя час за ${date} (${time}). Телефонът ми е ${phone}.`;
+                const encodedText = encodeURIComponent(text);
+                
+                // Replace with Dr. Giteva/Kasnakova's main mobile number (Format: 359...)
+                const clinicPhone = "359899177396"; 
+                
+                // Open WhatsApp in new tab
+                window.open(`https://wa.me/${clinicPhone}?text=${encodedText}`, '_blank');
+            }
+
+            // 5. Success State
+            btn.innerText = "УСПЕШНО ИЗПРАТЕНО! ✅";
+            btn.classList.replace('bg-blue-600', 'bg-green-600');
+            
+            // 6. Google Analytics Tracking
+            if(typeof gtag === 'function'){
+                gtag('event', 'conversion', {'event_category': 'form', 'event_label': 'Concierge Booking'});
+            }
+
+            setTimeout(() => {
+                form.reset();
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.classList.replace('bg-green-600', 'bg-blue-600');
+            }, 3000);
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        btn.innerText = "ГРЕШКА. МОЛЯ ОБАДЕТЕ СЕ.";
+    });
+});
+
 // Function for Phone Calls
 function trackCall(doctorName) {
     gtag('event', 'contact', {
