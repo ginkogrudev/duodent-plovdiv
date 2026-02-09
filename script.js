@@ -148,7 +148,21 @@ function acceptCookies() {
 }
 
 // Funnel Action
+// Function for Booking Clicks
 function openBooking() {
-    // Direct link to the DuoDent Superdoc page
-    window.open('https://superdoc.bg/klinika/dentalen-kabinet-duodent', '_blank');
+    // This sends an event to Google Analytics
+    gtag('event', 'generate_lead', {
+        'event_category': 'Engagement',
+        'event_label': 'Superdoc Booking Click'
+    });
+    
+    window.open("https://superdoc.bg/klinika/dentalen-kabinet-duodent", "_blank");
+}
+
+// Function for Phone Calls
+function trackCall(doctorName) {
+    gtag('event', 'contact', {
+        'event_category': 'Conversion',
+        'event_label': 'Phone Call: ' + doctorName
+    });
 }
