@@ -8,6 +8,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .calendar-day { transition: all 0.2s; }
+        .calendar-day:hover:not(.disabled) { background-color: #eff6ff; color: #2563eb; }
+        .calendar-day.selected { background-color: #2563eb; color: white; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); }
+        .calendar-day.disabled { color: #cbd5e1; cursor: not-allowed; }
+        .time-slot { transition: all 0.2s; border: 1px solid #e2e8f0; }
+        .time-slot:hover { border-color: #2563eb; color: #2563eb; }
+        .time-slot.selected { background-color: #2563eb; color: white; border-color: #2563eb; }
+    </style>
 </head>
 <body class="bg-white font-sans text-slate-900 selection:bg-blue-600 selection:text-white">
 
@@ -24,7 +33,7 @@
         </div>
     
         <div class="flex items-center gap-4">
-            <button onclick="openBooking()" class="btn-primary hidden sm:block">ЗАПАЗЕТЕ ЧАС</button>
+            <button onclick="document.getElementById('book').scrollIntoView()" class="btn-primary hidden sm:block">ЗАПАЗЕТЕ ЧАС</button>
             <button id="menu-toggle" class="lg:hidden p-2 text-blue-900">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
@@ -38,7 +47,7 @@
         <a href="#services" class="text-3xl font-black uppercase mobile-link">Услуги</a>
         <a href="#team" class="text-3xl font-black uppercase mobile-link">За Мен</a>
         <a href="#reviews-wall" class="text-3xl font-black uppercase mobile-link">Мнения</a>
-        <button onclick="openBooking(); toggleMenu();" class="mt-4 bg-white text-blue-900 px-8 py-4 rounded-xl font-bold">ЗАПАЗЕТЕ ЧАС</button>
+        <button onclick="document.getElementById('book').scrollIntoView(); toggleMenu();" class="mt-4 bg-white text-blue-900 px-8 py-4 rounded-xl font-bold">ЗАПАЗЕТЕ ЧАС</button>
     </div>
     
     <section class="pt-32 pb-20 px-6">
@@ -51,7 +60,7 @@
                     Кабинетът на Д-р Ох Боли: Над 10 години професионален опит и грижа за всеки пациент. Работим с НЗОК.
                 </p>
                 <div class="flex gap-4">
-                    <button onclick="openBooking()" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:bg-blue-700 transition-all">Свържете се с нас</button>
+                    <button onclick="document.getElementById('book').scrollIntoView()" class="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:bg-blue-700 transition-all">Запази час онлайн</button>
                     <div class="flex items-center gap-2 px-4 border-l border-slate-200">
                         <span class="font-bold text-blue-900">10+</span>
                         <span class="text-xs text-slate-400 uppercase font-bold">Години Опит</span>
@@ -59,14 +68,13 @@
                 </div>
             </div>
             <div class="relative">
-                <img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80" class="rounded-[2.5rem] shadow-2xl border-8 border-white object-cover h-[500px] w-full" alt="Стоматологичен Кабинет Ямбол">
+                <img src="img/smile-1.jpg" class="rounded-[2.5rem] shadow-2xl border-8 border-white object-cover h-[500px] w-full" alt="Стоматологичен Кабинет Ямбол">
             </div>
         </div>
     </section>
 
    <section id="results" class="py-20 bg-white overflow-hidden">
     <div class="container mx-auto px-6">
-        
         <div class="text-center max-w-3xl mx-auto mb-12 reveal">
             <h2 class="text-xs font-bold tracking-[0.4em] text-blue-500 uppercase mb-4">Галерия</h2>
             <h3 class="text-4xl md:text-5xl font-black text-blue-900 leading-tight">
@@ -88,9 +96,8 @@
             <div class="hero-column flex-[2.5] relative cursor-pointer reveal reveal-delay-2 transition-all duration-700 group" 
                  onclick="toggleAccordion(this)">
                 <div class="h-full rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white relative bg-slate-100">
-                    <img src="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover brightness-90 group-hover:scale-105 transition-transform duration-1000" alt="Main Result">
-                    
-                    <div class="absolute inset-0 bg-gradient-to-t from-blue-900/90 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
+                    <img src="img/mouth.jpg" class="w-full h-full object-cover brightness-90 group-hover:scale-120 transition-transform duration-1000" alt="Main Result">
+                    <div class="absolute inset-0  via-transparent to-transparent flex flex-col justify-end p-8 text-white">
                         <span class="text-[10px] font-bold uppercase tracking-widest text-blue-300 mb-1">Резултат</span>
                         <h4 class="text-2xl font-bold uppercase">Пълна Промяна</h4>
                         <div class="accordion-content max-h-0 opacity-0 overflow-hidden transition-all duration-500">
@@ -109,36 +116,69 @@
                 </div>
             </div>
         </div>
-
-        <div class="flex flex-col items-center reveal reveal-delay-3">
-            <button onclick="openBooking()" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-2xl font-black text-lg shadow-[0_20px_50px_rgba(37,99,235,0.3)] transition-all hover:-translate-y-1 active:scale-95">
-                СВЪРЖЕТЕ СЕ С НАС
-            </button>
-            <p class="mt-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Работим с НЗОК в Ямбол • Достъпни Цени</p>
-        </div>
-
     </div>
 </section>
 
-<section class="py-24 px-6 bg-blue-900 text-white text-center">
-    <div class="max-w-4xl mx-auto">
-        <h2 class="text-4xl md:text-6xl font-extrabold mb-8 uppercase tracking-tighter">
-            Лечение <br> <span class="text-blue-400">без страх и болка.</span>
-        </h2>
-        <p class="text-xl mb-12 opacity-90">Доверете се на 10+ години опит в Ямбол.</p>
-        
-        <div class="grid md:grid-cols-3 gap-8 text-left">
-            <div class="bg-white/10 p-8 rounded-2xl border border-white/20">
-                <h4 class="font-bold text-2xl mb-2">НЗОК</h4>
-                <p class="text-sm opacity-70">Работим със Здравната Каса за Ваше улеснение.</p>
+<section id="book" class="py-24 bg-slate-50 relative">
+    <div class="container mx-auto px-6 relative z-10">
+        <div class="text-center mb-12 reveal">
+            <h2 class="text-xs font-bold tracking-[0.4em] text-blue-500 uppercase mb-4">График</h2>
+            <h2 class="text-3xl md:text-5xl font-black text-blue-900 uppercase">Запазете Час</h2>
+            <p class="text-slate-500 mt-4">Вижте свободните часове в реално време и запазете своя.</p>
+        </div>
+
+        <div class="max-w-5xl mx-auto bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden flex flex-col md:flex-row reveal reveal-delay-2">
+            
+            <div class="md:w-1/2 p-8 md:p-10 border-r border-slate-100">
+                <div class="flex justify-between items-center mb-8">
+                    <h3 class="font-bold text-xl text-blue-900 capitalize" id="currentMonth">...</h3>
+                    <div class="flex gap-2">
+                        <button id="prevMonth" class="w-10 h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500 transition-colors">←</button>
+                        <button id="nextMonth" class="w-10 h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-500 transition-colors">→</button>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-slate-400 mb-4 uppercase tracking-widest">
+                    <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Нд</div>
+                </div>
+                
+                <div class="grid grid-cols-7 gap-2" id="calendarGrid">
+                    </div>
             </div>
-            <div class="bg-white/10 p-8 rounded-2xl border border-white/20">
-                <h4 class="font-bold text-2xl mb-2">100%</h4>
-                <p class="text-sm opacity-70">Внимание и лично отношение към всеки пациент.</p>
-            </div>
-            <div class="bg-white/10 p-8 rounded-2xl border border-white/20">
-                <h4 class="font-bold text-2xl mb-2">10г.+</h4>
-                <p class="text-sm opacity-70">Доказан опит и стотици доволни пациенти.</p>
+
+            <div class="md:w-1/2 p-8 md:p-10 bg-slate-50 flex flex-col">
+                <div id="slotsView">
+                    <h3 class="font-bold text-lg text-blue-900 mb-2">Свободни часове</h3>
+                    <p class="text-sm text-slate-500 mb-6" id="selectedDateText">Моля изберете дата от календара</p>
+
+                    <div id="slotsContainer" class="grid grid-cols-3 gap-3">
+                        <div class="col-span-3 text-center py-10 opacity-50 text-sm">
+                            🗓️ Изберете ден, за да видите часовете.
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bookingInputs" class="hidden h-full flex flex-col justify-center animate-fade-in">
+                    <button id="backToSlots" class="text-xs font-bold text-slate-400 mb-4 hover:text-blue-600 flex items-center gap-1">
+                        ← Назад към часовете
+                    </button>
+                    <h3 class="font-bold text-xl text-blue-900 mb-1">Почти готово!</h3>
+                    <p class="text-sm text-slate-500 mb-6">Потвърждаване за <span id="confirmDateString" class="font-bold text-blue-600">...</span></p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs font-bold text-blue-900 uppercase tracking-widest ml-1">Име</label>
+                            <input type="text" id="c_name" class="w-full bg-white border border-slate-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none shadow-sm" placeholder="Иван Иванов">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-blue-900 uppercase tracking-widest ml-1">Телефон</label>
+                            <input type="tel" id="c_phone" class="w-full bg-white border border-slate-200 p-4 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none shadow-sm" placeholder="08XX XXX XXX">
+                        </div>
+                        <button id="finalBookBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg shadow-blue-200 transition-all hover:-translate-y-1 mt-2">
+                            ПАТВЪРДИ ЧАСА ✅
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -146,11 +186,10 @@
 
 <section id="team" class="py-24 bg-white">
     <div class="container mx-auto px-6">
-        
         <div class="grid lg:grid-cols-2 gap-16 items-center">
             <div class="relative group">
                 <div class="aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl bg-slate-100">
-                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea86b48e?auto=format&fit=crop&w=800&q=80" alt="Д-р Ох Боли" class="w-full h-full object-cover transition-all hover:scale-105 duration-700">
+                    <img src="img/doctor-oh-boli.jpg" alt="Д-р Ох Боли" class="w-full h-full object-cover transition-all hover:scale-105 duration-700">
                 </div>
                 <div class="absolute -bottom-6 -left-6 bg-blue-600 text-white p-6 rounded-2xl shadow-xl">
                     <p class="text-xs uppercase tracking-widest opacity-80">Опит</p>
@@ -172,11 +211,6 @@
                     <span class="px-4 py-2 bg-blue-50 rounded-full text-xs font-bold text-blue-600">Работи с НЗОК</span>
                 </div>
 
-                <div class="bg-blue-50 p-6 rounded-2xl border-l-4 border-blue-500 italic text-slate-700">
-                    "Невероятно отношение! За първи път сядам на зъболекарския стол без страх. Препоръчвам горещо!"
-                    <span class="block mt-2 font-bold not-italic text-sm text-blue-900">— Доволен пациент</span>
-                </div>
-
                 <div class="flex items-center gap-4 mt-6">
                     <a href="#" class="flex items-center gap-2 group">
                         <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
@@ -190,47 +224,7 @@
     </div>
 </section>
 
-<section id="reviews-wall" class="py-24 bg-slate-50">
-    <div class="container mx-auto px-6">
-        <div class="text-center mb-16 reveal">
-            <h2 class="text-xs font-bold tracking-[0.4em] text-blue-500 uppercase mb-4">Отзиви</h2>
-            <h3 class="text-4xl font-black text-blue-900 uppercase">Доволни пациенти</h3>
-        </div>
-
-        <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-            
-            <div class="break-inside-avoid bg-white p-8 rounded-3xl shadow-sm border border-slate-100 reveal">
-                <div class="flex text-blue-500 mb-4 gap-1">★★★★★</div>
-                <p class="text-slate-600 leading-relaxed italic mb-6">"Изключителен професионалист! Кабинетът е приветлив и уютен. Чувствах се в сигурни ръце."</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600 text-sm">АА</div>
-                    <span class="font-bold text-blue-900 text-sm">Анна А.</span>
-                </div>
-            </div>
-
-            <div class="break-inside-avoid bg-white p-8 rounded-3xl shadow-sm border border-slate-100 reveal reveal-delay-1">
-                <div class="flex text-blue-500 mb-4 gap-1">★★★★★</div>
-                <p class="text-slate-600 leading-relaxed italic mb-6">"Изключително внимателен специалист. Работи спокойно и обяснява всичко ясно."</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600 text-sm">МС</div>
-                    <span class="font-bold text-blue-900 text-sm">Мария С.</span>
-                </div>
-            </div>
-
-            <div class="break-inside-avoid bg-blue-900 p-8 rounded-3xl shadow-xl text-white reveal reveal-delay-2">
-                <div class="flex text-yellow-400 mb-4 gap-1">★★★★★</div>
-                <p class="leading-relaxed italic mb-6">"Доверявам напълно усмивката си. Най-добрият избор в Ямбол."</p>
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center font-bold text-white text-sm">ТТ</div>
-                    <span class="font-bold text-sm">Теодора Т.</span>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</section>
-
-   <section id="services" class="py-24 bg-white">
+<section id="services" class="py-24 bg-white">
     <div class="container mx-auto px-6">
         <div class="grid lg:grid-cols-12 gap-12 items-center">
             <div class="lg:col-span-5 space-y-8 reveal">
@@ -252,14 +246,6 @@
                         <div>
                             <h4 class="font-bold text-blue-900 text-lg">Естетични Възстановявания</h4>
                             <p class="text-slate-500 text-sm">Висококачествени пломби и корони.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-4 group">
-                        <div class="text-2xl">👶</div>
-                        <div>
-                            <h4 class="font-bold text-blue-900 text-lg">Детска Стоматология</h4>
-                            <p class="text-slate-500 text-sm">Грижа за най-малките с внимание и търпение.</p>
                         </div>
                     </div>
                 </div>
@@ -293,9 +279,6 @@
                 <p>📞 <a href="#" class="hover:text-blue-600 transition-colors">08XX XXX XXX</a></p>
             </div>
         </div>
-
-        <div class="md:text-right">
-            </div>
     </div>
 </footer>
 
